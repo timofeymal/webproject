@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+        <title>{{ channel }}</title>
+    </head>
+    <body>
+        <h1>Вы находитесь в канале {{ channel }}!</h1>
+        <h2>Сообщения:</h2>
+        {% for item in messages %}
+            <h3>{{item["user"]}}: {{item["message"]}}</h3>
+        {% endfor %}
+        <form class="message_send" method="post">
+            <input type="text" class="form-control" id="user" placeholder="Введите ваш никнейм" name="user">
+            <input type="text" class="form-control" id="message" placeholder="Введите сообщение" name="message">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </body>
+</html>
