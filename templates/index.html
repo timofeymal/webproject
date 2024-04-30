@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
         <title>{{ channel }}</title>
+        <!-- Этот скрипт раз в 100 миллисекунд загружает список сообщений -->
+        <script>
+            function loadDoc() {
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                 document.getElementById("messages").innerHTML = this.responseText;
+                }
+              };
+              xhttp.open("GET", "/messages/{{ channel }}", true);
+              xhttp.send();
+            }
+            var timer = setInterval(loadDoc, 100);
+        </script>
     </head>
     <body>
         <h1>Вы находитесь в канале {{ channel }}!</h1>
-        <h2>Сообщения:</h2>
-        {% for item in messages %}
-            <h3>{{item["user"]}}: {{item["message"]}}</h3>
-        {% endfor %}
+        <div id="messages">
+            <h2>Тут должны появиться сообщения</h2>
+        </div>
         <form class="message_send" method="post">
             <input type="text" class="form-control" id="user" placeholder="Введите ваш никнейм" name="user">
             <input type="text" class="form-control" id="message" placeholder="Введите сообщение" name="message">

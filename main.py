@@ -1,26 +1,37 @@
 from flask import *
-from time import sleep
+
 
 app = Flask(__name__)
 messages = {}
 
 
-@app.route("/<channel>", methods=["POST", "GET"])
-def index(channel):
+# Выбор канала
+@app.route("/", methods=["POST", "GET"])
+def load_channel_picker():
     if request.method == "GET":
-        if channel not in messages:
-            messages[channel] = []
+        return render_template("pick.html")
+    if request.method == "POST":
+        return redirect(f"/{request.form['channel']}")
+
+
+# Канал
+@app.route("/<channel>", methods=["POST", "GET"])
+def load_channel(channel):
+    if channel not in messages:
+        messages[channel] = []
+    if request.method == "GET":
         return render_template("index.html", channel=channel, messages=messages[channel])
     if request.method == "POST":
-        if channel not in messages:
-            messages[channel] = []
         messages[channel].append({"user": request.form["user"], "message": request.form["message"]})
         return redirect(f"/{channel}")
-    while True:
-        dict_check = messages
-        sleep(0.1)
-        if messages != dict_check:
-            return redirect(f"/{channel}")
+
+
+# Список сообщений
+@app.route("/messages/<channel>")
+def load_messages(channel):
+    if channel not in messages:
+        messages[channel] = []
+    return render_template("messages.html", channel=channel, messages=messages[channel])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ channel }}</title>
+    </head>
+    <body>
+        <h2>Сообщения:</h2>
+        {% for item in messages %}
+            <h3>{{item["user"]}}: {{item["message"]}}</h3>
+        {% endfor %}
+    </body>
+</html>
